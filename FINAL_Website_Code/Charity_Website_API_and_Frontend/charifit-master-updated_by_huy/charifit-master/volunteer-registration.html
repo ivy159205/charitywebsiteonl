@@ -1,0 +1,645 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Charifit</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- <link rel="manifest" href="site.webmanifest"> -->
+  <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <!-- CSS here -->
+  <link rel="stylesheet" href="css/swiper-bundle.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/magnific-popup.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/themify-icons.css">
+  <link rel="stylesheet" href="css/nice-select.css">
+  <link rel="stylesheet" href="css/flaticon.css">
+  <link rel="stylesheet" href="css/gijgo.css">
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/slicknav.css">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- <link rel="stylesheet" href="css/responsive.css"> -->
+</head>
+
+<body>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c8d46;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    select,
+    input,
+    button {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    select:focus,
+    input:focus {
+      outline: none;
+      border-color: #2c8d46;
+    }
+
+    button {
+      background-color: #2c8d46;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #236b37;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 14px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .campaign-info {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      display: none;
+    }
+
+    .campaign-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .campaign-dates {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    .campaign-description {
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    .campaign-progress {
+      margin-top: 15px;
+    }
+
+    progress {
+      width: 100%;
+      height: 15px;
+      border-radius: 4px;
+    }
+
+    .campaign-amounts {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  </style>
+  <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+
+  <!-- header-start -->
+  <header>
+    <div class="header-area ">
+      <div class="header-top_area">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xl-6 col-md-12 col-lg-8">
+              <div class="short_contact_list">
+                <ul>
+                  <li><a href="#"> <i class="fa fa-phone"></i> +1 (454) 556-5656</a></li>
+                  <li><a href="#"> <i class="fa fa-envelope"></i>Yourmail@gmail.com</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xl-6 col-md-6 col-lg-4">
+              <div class="social_media_links d-none d-lg-block">
+                <a href="#">
+                  <i class="fa fa-facebook"></i>
+                </a>
+                <a href="#">
+                  <i class="fa fa-pinterest-p"></i>
+                </a>
+                <a href="#">
+                  <i class="fa fa-linkedin"></i>
+                </a>
+                <a href="#">
+                  <i class="fa fa-twitter"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="sticky-header" class="main-header-area">
+        <div class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-xl-3 col-lg-3">
+              <div class="logo">
+                <a href="index.html">
+                  <img src="img/logo.png" alt="">
+                </a>
+              </div>
+            </div>
+            <div class="col-xl-9 col-lg-9">
+              <div class="main-menu">
+                <nav>
+                  <ul id="navigation">
+                    <li><a href="index.html">home</a></li>
+                    <li><a href="About.html">About</a></li>
+
+                    <li><a href="cause.html">Campaigns</a>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                  </ul>
+                </nav>
+                <div class="Appointment">
+                  <div class="book_btn d-none d-lg-block">
+                    <a href="login.html" id="loginBtn">Login</a>
+                    <a href="#" id="logoutBtn" style="display: none;">Logout</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="mobile_menu d-block d-lg-none"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- header-end -->
+
+  <!-- bradcam_area_start  -->
+  <div class="bradcam_text text-center">
+    <h3>Volunteer Registration</h3>
+  </div>
+  <div class="swiper bradcam_swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <div class="bradcam_area breadcam_bg overlay d-flex align-items-center justify-content-center">
+
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="bradcam_area breadcam_bg_1 overlay d-flex align-items-center justify-content-center">
+
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="bradcam_area breadcam_bg_2 overlay d-flex align-items-center justify-content-center">
+
+        </div>
+      </div>
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+  <!-- bradcam_area_end  -->
+
+  <!-- ================ contact section start ================= -->
+  <section class="register-volunteer">
+    <div class="container">
+      <h1>Đăng ký làm tình nguyện viên</h1>
+      <div class="form-group">
+        <label for="campaignSelect">Chọn chiến dịch:</label>
+        <select id="campaignSelect">
+          <option value="">-- Vui lòng chọn chiến dịch --</option>
+        </select>
+        <div id="error-campaign" class="error-message">Vui lòng chọn một chiến dịch</div>
+      </div>
+
+      <div id="campaignInfo" class="campaign-info">
+        <div class="campaign-title" id="campaignTitle"></div>
+        <div class="campaign-dates">
+          <span id="campaignStartDate"></span>
+          <span id="campaignEndDate"></span>
+        </div>
+        <div class="campaign-description" id="campaignDescription"></div>
+        <div class="campaign-progress">
+          <progress id="campaignProgressBar" value="0" max="100"></progress>
+          <div class="campaign-amounts">
+            <span id="campaignCollected"></span>
+            <span id="campaignGoal"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button id="registerBtn">Đăng ký tham gia</button>
+      </div>
+
+      <div id="successMessage" class="success-message">
+        Đăng ký tình nguyện viên thành công! Trạng thái đơn đăng ký của bạn: <strong>Chờ duyệt</strong>
+      </div>
+    </div>
+  </section>
+  <!-- ================ contact section end ================= -->
+
+
+  <!-- footer_start  -->
+  <footer class="footer">
+    <div class="footer_top">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-4 col-md-6 col-lg-4 ">
+            <div class="footer_widget">
+              <div class="footer_logo">
+                <a href="#">
+                  <img src="img/footer_logo.png" alt="">
+                </a>
+              </div>
+              <p class="address_text">Lorem ipsum dolor sit amet, <br> consectetur adipiscing elit, sed do <br> eiusmod
+                tempor incididunt ut labore.
+              </p>
+              <div class="socail_links">
+                <ul>
+                  <li>
+                    <a href="#">
+                      <i class="ti-facebook"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="ti-twitter-alt"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-dribbble"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-instagram"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-xl-2 col-md-6 col-lg-2">
+            <div class="footer_widget">
+              <h3 class="footer_title">
+                Services
+              </h3>
+              <ul class="links">
+                <li><a href="#">Donate</a></li>
+                <li><a href="#">Sponsor</a></li>
+                <li><a href="#">Fundraise</a></li>
+                <li><a href="#">Volunteer</a></li>
+                <li><a href="#">Partner</a></li>
+                <li><a href="#">Jobs</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 col-lg-3">
+            <div class="footer_widget">
+              <h3 class="footer_title">
+                Contacts
+              </h3>
+              <div class="contacts">
+                <p>+2(305) 587-3407 <br>
+                  info@loveuscharity.com <br>
+                  Flat 20, Reynolds Neck, North
+                  Helenaville, FV77 8WS
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 col-lg-3">
+            <div class="footer_widget">
+              <h3 class="footer_title">
+                Top News
+              </h3>
+              <ul class="news_links">
+                <li>
+                  <div class="thumb">
+                    <a href="#">
+                      <img src="img/news/news_1.png" alt="">
+                    </a>
+                  </div>
+                  <div class="info">
+                    <a href="#">
+                      <h4>School for African
+                        Childrens</h4>
+                    </a>
+                    <span>Jun 12, 2019</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="thumb">
+                    <a href="#">
+                      <img src="img/news/news_2.png" alt="">
+                    </a>
+                  </div>
+                  <div class="info">
+                    <a href="#">
+                      <h4>School for African
+                        Childrens</h4>
+                    </a>
+                    <span>Jun 12, 2019</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copy-right_text">
+      <div class="container">
+        <div class="row">
+          <div class="bordered_1px "></div>
+          <div class="col-xl-12">
+            <p class="copy_right text-center">
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;
+              <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made
+              with <i class="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                target="_blank">Colorlib</a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- footer_end  -->
+
+  <!-- JS here -->
+  <script src="js/SwiperCarousel.js"></script>
+  <script src="js/swiper-bundle.min.js"></script>
+  <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+  <script src="js/vendor/jquery-1.12.4.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/isotope.pkgd.min.js"></script>
+  <script src="js/ajax-form.js"></script>
+  <script src="js/waypoints.min.js"></script>
+  <script src="js/jquery.counterup.min.js"></script>
+  <script src="js/imagesloaded.pkgd.min.js"></script>
+  <script src="js/scrollIt.js"></script>
+  <script src="js/jquery.scrollUp.min.js"></script>
+  <script src="js/wow.min.js"></script>
+  <script src="js/nice-select.min.js"></script>
+  <script src="js/jquery.slicknav.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/gijgo.min.js"></script>
+
+  <!--contact js-->
+  <script src="js/contact.js"></script>
+  <script src="js/jquery.ajaxchimp.min.js"></script>
+  <script src="js/jquery.form.js"></script>
+  <script src="js/jquery.validate.min.js"></script>
+  <script src="js/mail-script.js"></script>
+
+  <script src="js/main.js"></script>
+  <script src="js/hidenseek.js"></script>
+  <script>
+    // Đường dẫn API
+    const API_URL = 'http://vanesline.runasp.net'; // Thay đổi URL tùy theo cấu hình server của bạn
+    let campaigns = [];
+    let selectedCampaign = null;
+    let currentUser = null;
+
+    // Lấy thông tin user từ localStorage
+    function getCurrentUser() {
+      const userDataJson = localStorage.getItem('userData');
+      if (userDataJson) {
+        try {
+          const userData = JSON.parse(userDataJson);
+          return {
+            userId: userData.userId,
+            username: userData.username,
+            email: userData.email,
+            role: userData.role
+          };
+        } catch (error) {
+          console.error('Lỗi khi parse dữ liệu người dùng:', error);
+          return null;
+        }
+      }
+      return null;
+    }
+
+    // Format số tiền
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+        minimumFractionDigits: 0
+      }).format(amount);
+    }
+
+    // Format ngày tháng
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('vi-VN');
+    }
+
+    // Lấy danh sách chiến dịch từ API
+    async function fetchCampaigns() {
+      try {
+        const response = await fetch(`${API_URL}/api/Campaign/GetList`);
+        if (!response.ok) {
+          throw new Error('Không thể lấy danh sách chiến dịch');
+        }
+
+        campaigns = await response.json();
+        populateCampaignDropdown(campaigns);
+      } catch (error) {
+        console.error('Lỗi khi lấy danh sách chiến dịch:', error);
+      }
+    }
+
+    // Hiển thị danh sách chiến dịch vào dropdown
+    function populateCampaignDropdown(campaigns) {
+      const dropdown = document.getElementById('campaignSelect');
+
+      campaigns.forEach(campaign => {
+        const option = document.createElement('option');
+        option.value = campaign.cCampaignId;
+        option.textContent = campaign.cTitle;
+        dropdown.appendChild(option);
+      });
+    }
+
+    // Lấy thông tin chi tiết của chiến dịch từ API
+    async function fetchCampaignDetails(campaignId) {
+      try {
+        const response = await fetch(`${API_URL}/api/Campaign/GetbyID?id=${campaignId}`);
+        if (!response.ok) {
+          throw new Error('Không thể lấy thông tin chiến dịch');
+        }
+
+        const campaign = await response.json();
+        displayCampaignInfo(campaign);
+        selectedCampaign = campaign;
+      } catch (error) {
+        console.error('Lỗi khi lấy thông tin chiến dịch:', error);
+      }
+    }
+
+    // Hiển thị thông tin chi tiết của chiến dịch
+    function displayCampaignInfo(campaign) {
+      const infoDiv = document.getElementById('campaignInfo');
+      document.getElementById('campaignTitle').textContent = campaign.cTitle;
+      document.getElementById('campaignStartDate').textContent = `Bắt đầu: ${formatDate(campaign.cStartDate)}`;
+      document.getElementById('campaignEndDate').textContent = `Kết thúc: ${formatDate(campaign.cEndDate)}`;
+      document.getElementById('campaignDescription').textContent = campaign.cDescription;
+
+      // Tính tiến độ
+      const progress = (campaign.cCollectedAmount / campaign.cGoalAmount) * 100;
+      document.getElementById('campaignProgressBar').value = progress;
+      document.getElementById('campaignCollected').textContent = formatCurrency(campaign.cCollectedAmount);
+      document.getElementById('campaignGoal').textContent = formatCurrency(campaign.cGoalAmount);
+
+      infoDiv.style.display = 'block';
+    }
+
+    // Đăng ký làm tình nguyện viên sử dụng query string
+    async function registerVolunteer() {
+      const campaignId = document.getElementById('campaignSelect').value;
+
+      // Kiểm tra xem người dùng đã chọn chiến dịch chưa
+      if (!campaignId) {
+        document.getElementById('error-campaign').style.display = 'block';
+        return;
+      } else {
+        document.getElementById('error-campaign').style.display = 'none';
+      }
+
+      // Kiểm tra xem đã có thông tin người dùng chưa
+      if (!currentUser || !currentUser.userId) {
+        alert('Vui lòng đăng nhập để đăng ký làm tình nguyện viên');
+        return;
+      }
+
+      try {
+        // Tạo URL với query string
+        const url = `${API_URL}/Volunteer/Insert?volunteerId=${null}&userId=${encodeURIComponent(currentUser.userId)}&campaignId=${encodeURIComponent(campaignId)}&status=Chờ duyệt`;
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Đăng ký không thành công');
+        }
+
+        // Hiển thị thông báo thành công
+        document.getElementById('successMessage').style.display = 'block';
+
+        // Reset form
+        document.getElementById('campaignSelect').value = '';
+        document.getElementById('campaignInfo').style.display = 'none';
+      } catch (error) {
+        console.error('Lỗi khi đăng ký tình nguyện viên:', error);
+        alert(`Đã xảy ra lỗi khi đăng ký: ${error.message}`);
+      }
+    }
+
+    // Khởi tạo trang
+    function initPage() {
+      // Lấy thông tin người dùng hiện tại
+      currentUser = getCurrentUser();
+
+      // Nếu chưa đăng nhập, hiển thị thông báo
+      if (!currentUser) {
+        alert('Vui lòng đăng nhập để đăng ký làm tình nguyện viên');
+        // Tùy thuộc vào ứng dụng, có thể chuyển hướng người dùng đến trang đăng nhập
+        // window.location.href = 'login.html';
+      } else {
+        console.log("Đã lấy thông tin người dùng:", currentUser.userId);
+      }
+
+      // Lấy danh sách chiến dịch
+      fetchCampaigns();
+
+      // Xử lý sự kiện khi người dùng chọn chiến dịch
+      document.getElementById('campaignSelect').addEventListener('change', function () {
+        const campaignId = this.value;
+        if (campaignId) {
+          fetchCampaignDetails(campaignId);
+        } else {
+          document.getElementById('campaignInfo').style.display = 'none';
+        }
+      });
+
+      // Xử lý sự kiện khi người dùng nhấn nút đăng ký
+      document.getElementById('registerBtn').addEventListener('click', registerVolunteer);
+    }
+
+    // Khởi chạy khi trang đã tải xong
+    document.addEventListener('DOMContentLoaded', initPage);
+  </script>
+</body>
+
+</html>

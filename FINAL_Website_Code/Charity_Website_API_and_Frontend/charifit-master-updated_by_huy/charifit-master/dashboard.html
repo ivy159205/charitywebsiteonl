@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng quan - Trang quản trị</title>
+    <link rel="stylesheet" href="css/dashboard_styles.css">
+</head>
+
+<body>
+    <!-- Phần thống kê tổng quan -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <h3>Tổng số chiến dịch</h3>
+            <div class="number" id="campaignNumber"></div>
+            <div class="trend" id="campaignTrend"></div>
+        </div>
+        <div class="stat-card">
+            <h3>Tổng số quyên góp</h3>
+            <div class="number" id="collectedAmount"></div>
+            <div class="trend" id="collectedAmountTrend"></div>
+        </div>
+        <div class="stat-card">
+            <h3>Số người tham gia</h3>
+            <div class="number" id="volunteerNumber"></div>
+            <div class="trend" id="volunteerTrend"></div>
+        </div>
+        <div class="stat-card">
+            <h3>Dự án hoàn thành</h3>
+            <div class="number" id="finishedCampaignNumber"></div>
+            <div class="trend" id="finishedCampaignTrend"></div>
+        </div>
+    </div>
+
+    <!-- Layout 2 cột cho nội dung chính -->
+    <div class="grid-container">
+        <!-- Cột trái: Dự án gần đây -->
+        <div class="section">
+            <h2>Dự án gần đây</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Goal Amount</th>
+                        <th>Collected Amount</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody id="campaignList"></tbody>
+            </table>
+        </div>
+
+        <!-- Cột phải: Hoạt động gần đây -->
+        <div class="section">
+            <h2>Hoạt động gần đây</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Admin ID</th>
+                        <th>Action</th>
+                        <th>Action Date</th>
+                    </tr>
+                </thead>
+                <tbody id="adminLogList"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+    const apiUrl = "http://vanesline.runasp.net/api/Campaign";
+
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchCampaigns();
+        fetchCollectedAmounts();
+        fetchVolunteers();
+        fetchFinishedCampaigns();
+        fetchRecentlyCampaigns();
+        fetchAdminLogs();
+    });
+
+    async function fetchCampaigns() {
+        try {
+            const response = await fetch(`${apiUrl}/GetList`);
+            if (!response.ok) {
+                throw new Error("Lỗi khi lấy dữ liệu từ API");
+            }
+
+            const campaigns = await response.json();
+            const campaignNumber = document.getElementById("campaignNumber");
+            const campaignTrend = document.getElementById("campaignTrend");
+
+            if (campaignNumber) {
+                campaignNumber.textContent = campaigns.length;
+            }
+
+            // Lấy tháng hiện tại và tháng trước
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+            const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+            // Hàm kiểm tra một chiến dịch có thuộc tháng nào không
+            function isSameMonth(date, month, year) {
+                return date.getMonth() === month && date.getFullYear() === year;
+            }
+
+            // Lọc các chiến dịch trong tháng hiện tại và tháng trước
+            const currentMonthCampaigns = campaigns.filter(campaign => {
+                const createdDate = new Date(campaign.cCreatedAt);
+                return isSameMonth(createdDate, currentMonth, currentYear);
+            });
+
+            const lastMonthCampaigns = campaigns.filter(campaign => {
+                const createdDate = new Date(campaign.cCreatedAt);
+                return isSameMonth(createdDate, lastMonth, lastMonthYear);
+            });
+
+            const currentCount = currentMonthCampaigns.length;
+            const lastCount = lastMonthCampaigns.length;
+            const trendDifference = currentCount - lastCount;
+            const trendPercentage = lastCount > 0 ? ((trendDifference / lastCount) * 100).toFixed(2) : 0;
+
+            // Hiển thị trend
+            if (campaignTrend) {
+                if (trendDifference > 0) {
+                    campaignTrend.innerHTML = `📈 +${trendPercentage}% <span style="color:green;">(Tăng ${trendDifference} chiến dịch so với tháng trước)</span>`;
+                } else if (trendDifference < 0) {
+                    campaignTrend.innerHTML = `📉 ${trendPercentage}% <span style="color:red;">(Giảm ${Math.abs(trendDifference)} chiến dịch so với tháng trước)</span>`;
+                } else {
+                    campaignTrend.innerHTML = `➖ 0% <span style="color:gray;">(Không thay đổi so với tháng trước)</span>`;
+                }
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+        }
+    }
+
+    async function fetchCollectedAmounts() {
+        try {
+            const response = await fetch(`${apiUrl}/GetList`);
+            if (!response.ok) {
+                throw new Error("Lỗi khi lấy dữ liệu từ API");
+            }
+
+            const donations = await response.json();
+            const collectedAmount = document.getElementById("collectedAmount");
+            const collectedAmountTrend = document.getElementById("collectedAmountTrend");
+
+            // Lấy tháng hiện tại và tháng trước
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+            const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+            // Hàm kiểm tra một bản ghi có thuộc tháng nào không
+            function isSameMonth(date, month, year) {
+                return date.getMonth() === month && date.getFullYear() === year;
+            }
+
+            // Lọc số tiền quyên góp theo tháng
+            let totalCurrentMonth = 0;
+            let totalLastMonth = 0;
+
+            donations.forEach(donation => {
+                const createdDate = new Date(donation.cCreatedAt);
+                const amount = parseFloat(donation.cCollectedAmount) || 0; // Đảm bảo số hợp lệ
+
+                if (isSameMonth(createdDate, currentMonth, currentYear)) {
+                    totalCurrentMonth += amount;
+                } else if (isSameMonth(createdDate, lastMonth, lastMonthYear)) {
+                    totalLastMonth += amount;
+                }
+            });
+
+            // Hiển thị tổng số tiền quyên góp
+            if (collectedAmount) {
+                collectedAmount.textContent = `${totalCurrentMonth.toLocaleString()} VND`;
+            }
+
+            // Tính xu hướng tăng/giảm
+            const trendDifference = totalCurrentMonth - totalLastMonth;
+            const trendPercentage = totalLastMonth > 0 ? ((trendDifference / totalLastMonth) * 100).toFixed(2) : 0;
+
+            // Hiển thị xu hướng
+            if (collectedAmountTrend) {
+                if (trendDifference > 0) {
+                    collectedAmountTrend.innerHTML = `📈 +${trendPercentage}% <span style="color:green;">(Tăng ${trendDifference.toLocaleString()} VND so với tháng trước)</span>`;
+                } else if (trendDifference < 0) {
+                    collectedAmountTrend.innerHTML = `📉 ${trendPercentage}% <span style="color:red;">(Giảm ${Math.abs(trendDifference).toLocaleString()} VND so với tháng trước)</span>`;
+                } else {
+                    collectedAmountTrend.innerHTML = `➖ 0% <span style="color:gray;">(Không thay đổi so với tháng trước)</span>`;
+                }
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+        }
+    }
+
+    const apiUrlVolunteer = "http://vanesline.runasp.net/Volunteer/GetList";
+
+    async function fetchVolunteers() {
+        try {
+            const response = await fetch(apiUrlVolunteer);
+            if (!response.ok) {
+                throw new Error("Lỗi khi lấy dữ liệu từ API");
+            }
+
+            const volunteers = await response.json();
+            const volunteerNumber = document.getElementById("volunteerNumber");
+            const volunteerTrend = document.getElementById("volunteerTrend");
+
+            // Hiển thị tổng số tình nguyện viên
+            if (volunteerNumber) {
+                volunteerNumber.textContent = volunteers.length;
+            }
+
+            // Lấy tháng hiện tại và tháng trước
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+            const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+            // Hàm kiểm tra một bản ghi có thuộc tháng nào không
+            function isSameMonth(date, month, year) {
+                return date.getMonth() === month && date.getFullYear() === year;
+            }
+
+            // Lọc số tình nguyện viên theo tháng
+            const currentMonthVolunteers = volunteers.filter(volunteer => {
+                const createdDate = new Date(volunteer.vAppliedAt);
+                return isSameMonth(createdDate, currentMonth, currentYear);
+            });
+
+            const lastMonthVolunteers = volunteers.filter(volunteer => {
+                const createdDate = new Date(volunteer.vAppliedAt);
+                return isSameMonth(createdDate, lastMonth, lastMonthYear);
+            });
+
+            const currentCount = currentMonthVolunteers.length;
+            const lastCount = lastMonthVolunteers.length;
+            const trendDifference = currentCount - lastCount;
+            const trendPercentage = lastCount > 0 ? ((trendDifference / lastCount) * 100).toFixed(2) : 0;
+
+            // Hiển thị xu hướng
+            if (volunteerTrend) {
+                if (trendDifference > 0) {
+                    volunteerTrend.innerHTML = `📈 +${trendPercentage}% <span style="color:green;">(Tăng ${trendDifference} tình nguyện viên so với tháng trước)</span>`;
+                } else if (trendDifference < 0) {
+                    volunteerTrend.innerHTML = `📉 ${trendPercentage}% <span style="color:red;">(Giảm ${Math.abs(trendDifference)} tình nguyện viên so với tháng trước)</span>`;
+                } else {
+                    volunteerTrend.innerHTML = `➖ 0% <span style="color:gray;">(Không thay đổi so với tháng trước)</span>`;
+                }
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+        }
+    }
+
+    async function fetchFinishedCampaigns() {
+        try {
+            const response = await fetch(`${apiUrl}/GetList`);
+            if (!response.ok) {
+                throw new Error("Lỗi khi lấy dữ liệu từ API");
+            }
+
+            const campaigns = await response.json();
+            const finishedCampaignNumber = document.getElementById("finishedCampaignNumber");
+            const finishedCampaignTrend = document.getElementById("finishedCampaignTrend");
+
+            // Lọc danh sách chiến dịch đã hoàn thành
+            const finishedCampaigns = campaigns.filter(campaign => {
+                return parseFloat(campaign.cCollectedAmount) >= parseFloat(campaign.cGoalAmount);
+            });
+
+            // Hiển thị tổng số chiến dịch đã hoàn thành
+            if (finishedCampaignNumber) {
+                finishedCampaignNumber.textContent = finishedCampaigns.length;
+            }
+
+            // Lấy tháng hiện tại và tháng trước
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+            const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+            // Hàm kiểm tra một bản ghi có thuộc tháng nào không
+            function isSameMonth(date, month, year) {
+                return date.getMonth() === month && date.getFullYear() === year;
+            }
+
+            // Lọc số chiến dịch hoàn thành theo tháng
+            const currentMonthFinished = finishedCampaigns.filter(campaign => {
+                const createdDate = new Date(campaign.cCreatedAt);
+                return isSameMonth(createdDate, currentMonth, currentYear);
+            });
+
+            const lastMonthFinished = finishedCampaigns.filter(campaign => {
+                const createdDate = new Date(campaign.cCreatedAt);
+                return isSameMonth(createdDate, lastMonth, lastMonthYear);
+            });
+
+            const currentCount = currentMonthFinished.length;
+            const lastCount = lastMonthFinished.length;
+            const trendDifference = currentCount - lastCount;
+            const trendPercentage = lastCount > 0 ? ((trendDifference / lastCount) * 100).toFixed(2) : 0;
+
+            // Hiển thị xu hướng
+            if (finishedCampaignTrend) {
+                if (trendDifference > 0) {
+                    finishedCampaignTrend.innerHTML = `📈 +${trendPercentage}% <span style="color:green;">(Tăng ${trendDifference} chiến dịch so với tháng trước)</span>`;
+                } else if (trendDifference < 0) {
+                    finishedCampaignTrend.innerHTML = `📉 ${trendPercentage}% <span style="color:red;">(Giảm ${Math.abs(trendDifference)} chiến dịch so với tháng trước)</span>`;
+                } else {
+                    finishedCampaignTrend.innerHTML = `➖ 0% <span style="color:gray;">(Không thay đổi so với tháng trước)</span>`;
+                }
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+        }
+    }
+
+    // Hàm format số với dấu chấm ngăn cách hàng nghìn
+    function formatNumber(number) {
+        if (number == null) return "0";
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    async function fetchRecentlyCampaigns() {
+        const response = await fetch(`${apiUrl}/GetList`);
+        const campaigns = await response.json();
+        const campaignList = document.getElementById("campaignList");
+
+        // Sắp xếp danh sách theo `cCreatedAt` từ mới nhất đến cũ nhất
+        const sortedCampaigns = campaigns.sort((a, b) => new Date(b.cCreatedAt) - new Date(a.cCreatedAt));
+
+        // Lấy 3 bản ghi mới nhất
+        const latestCampaigns = sortedCampaigns.slice(0, 3);
+
+        // Hiển thị danh sách lên bảng
+        campaignList.innerHTML = latestCampaigns.map(campaign => `
+        <tr>
+            <td>${campaign.cTitle}</td>
+            <td>${formatNumber(campaign.cGoalAmount)}</td>
+            <td>${formatNumber(campaign.cCollectedAmount)}</td>
+            <td>${campaign.cStartDate}</td>
+            <td>${campaign.cEndDate}</td>
+            <td>${campaign.cStatus}</td>
+            <td>${new Date(campaign.cCreatedAt).toLocaleDateString()}</td>
+        </tr>
+    `).join("");
+    }
+
+    const apiUrlAdminLog = "http://vanesline.runasp.net/AdminLog";
+
+    async function fetchAdminLogs() {
+        const response = await fetch(`${apiUrlAdminLog}/GetList`);
+        const adminLogs = await response.json();
+        const adminLogList = document.getElementById("adminLogList");
+
+        // Sắp xếp danh sách theo `aActionDate` từ mới nhất đến cũ nhất
+        const sortedAdminLogs = adminLogs.sort((a, b) => new Date(b.aActionDate) - new Date(a.aActionDate));
+
+        // Lấy 3 bản ghi mới nhất
+        const latestAdminLogs = sortedAdminLogs.slice(0, 3);
+
+        adminLogList.innerHTML = latestAdminLogs.map(adminLog => `
+        <tr>
+            <td>${adminLog.aAdminId}</td>
+            <td>${adminLog.aAction}</td>
+            <td>${adminLog.aActionDate}</td>
+        </tr>
+    `).join("");
+    }
+</script>
+
+</html>

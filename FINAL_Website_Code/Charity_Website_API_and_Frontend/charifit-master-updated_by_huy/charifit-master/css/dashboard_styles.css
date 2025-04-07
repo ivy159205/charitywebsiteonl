@@ -1,0 +1,133 @@
+/* Reset CSS cho dashboard */
+body .stats-container *,
+body .grid-container *,
+body .section *,
+body .stat-card * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* CSS cho body trong dashboard */
+body[onload] {
+    background-color: #f4f6f9;
+    padding: 20px;
+    color: #333;
+}
+
+/* CSS cho thẻ thống kê */
+body .stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+body .stats-container .stat-card {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    color: white;
+    transition: transform 0.3s ease-in-out;
+}
+
+body .stats-container .stat-card:hover {
+    transform: translateY(-5px);
+}
+
+body .stats-container .stat-card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+body .stats-container .stat-card .number {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+body .stats-container .stat-card .trend {
+    font-size: 14px;
+    margin-top: 5px;
+    opacity: 0.9;
+}
+
+/* CSS cho các section */
+body .grid-container .section {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s;
+}
+
+body .grid-container .section:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+body .grid-container .section h2 {
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    font-size: 18px;
+}
+
+/* CSS cho bảng */
+body .grid-container .section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+body .grid-container .section th,
+body .grid-container .section td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+body .grid-container .section th {
+    font-weight: 600;
+    color: #555;
+    background: #f9f9f9;
+}
+
+body .grid-container .section tr:hover {
+    background-color: #f1f3f6;
+    transition: background 0.3s ease-in-out;
+}
+
+/* CSS cho trạng thái */
+body .grid-container .section .status {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+body .grid-container .section .status-active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+body .grid-container .section .status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* CSS cho layout 2 cột */
+body .grid-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    body .grid-container {
+        grid-template-columns: 1fr;
+    }
+}

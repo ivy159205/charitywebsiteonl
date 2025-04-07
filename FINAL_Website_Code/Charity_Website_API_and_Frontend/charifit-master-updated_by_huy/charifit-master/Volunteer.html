@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Volunteer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">Danh sách Volunteer</h2>
+
+        <!-- Thanh Menu -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Quản lý</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="#">Quản lý Volunteer</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Quản lý Hóa đơn</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Giới thiệu</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="row mt-2">
+            <div class="col-md-10">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
+                    <button class="btn btn-primary" onclick="search()">Tìm kiếm</button>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100" onclick="openDialog()">Thêm tình nguyện viên</button>
+            </div>
+        </div>
+
+        <!-- Bảng Hiển Thị -->
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Volunteer ID</th>
+                    <th>User ID</th>
+                    <th>Campaign ID</th>
+                    <th>Status</th>
+                    <th>Applied At</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable"></tbody>
+        </table>
+    </div>
+    <!-- Dialog Thêm/Sửa -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thông tin Volunteer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="volunteerIndex">
+                    <div class="mb-3">
+                        <label class="form-label">Volunteer ID</label>
+                        <input type="text" id="v_volunteer_id" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">User ID</label>
+                        <input type="text" id="v_user_id" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Campaign ID</label>
+                        <select id="v_campaign_id" class="form-control">
+                            <option value="">Chọn Campaign</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <input type="text" id="v_status" class="form-control">
+                    </div>
+                    <button class="btn btn-success" onclick="saveVolunteer()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Biến lưu trữ URL cơ bản
+        const baseUrl = 'http://vanesline.runasp.net/Volunteer';
+
+        // Hàm load dữ liệu khi trang được tải
+        $(document).ready(function () {
+            loadData();
+        });
+
+        // Hàm tải dữ liệu từ API
+        function loadData() {
+            $.ajax({
+                url: `${baseUrl}/Getlist`,
+                method: 'GET',
+                success: function (data) {
+                    renderTable(data);
+                },
+                error: function (error) {
+                    alert('Lỗi khi tải dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Hàm render bảng với dữ liệu từ API
+        function renderTable(data) {
+            let html = '';
+            data.forEach((item, index) => {
+                html += `
+            <tr>
+                <td>${item.vVolunteerId}</td>
+                <td>${item.vUserId}</td>
+                <td>${item.vCampaignId}</td>
+                <td>${item.vStatus}</td>
+                <td>${new Date(item.vAppliedAt).toLocaleString()}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="openDialog('${item.vVolunteerId}')">Sửa</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteVolunteer('${item.vVolunteerId}')">Xóa</button>
+                </td>
+            </tr>
+        `;
+            });
+            $('#dataTable').html(html);
+        }
+
+        // Hàm mở dialog và load dữ liệu nếu là chế độ sửa
+        function openDialog(id = null) {
+            $("#editModal").modal("show");
+            if (id) {
+                // Load dữ liệu hiện tại vào form
+                $.ajax({
+                    url: `${baseUrl}/Getlist`,
+                    method: 'GET',
+                    success: function (data) {
+                        const volunteer = data.find(x => x.vVolunteerId === id);
+                        if (volunteer) {
+                            $("#v_volunteer_id").val(volunteer.vVolunteerId);
+                            $("#v_user_id").val(volunteer.vUserId);
+                            $("#v_campaign_id").val(volunteer.vCampaignId);
+                            $("#v_status").val(volunteer.vStatus);
+                        }
+                    }
+                });
+            } else {
+                // Xóa dữ liệu form nếu là thêm mới
+                $("#v_volunteer_id").val("");
+                $("#v_user_id").val("");
+                $("#v_campaign_id").val("");
+                $("#v_status").val("");
+            }
+        }
+        function saveVolunteer() {
+            const volunteerId = $("#v_volunteer_id").val();
+            const userId = $("#v_user_id").val();
+            const campaignId = $("#v_campaign_id").val();
+            const status = $("#v_status").val();
+
+            if (!volunteerId || !userId || !campaignId) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            if ($("#v_volunteer_id").prop("readonly")) {
+                updateVolunteer(volunteerId, userId, campaignId, status);
+            } else {
+                insertVolunteer(volunteerId, userId, campaignId, status);
+            }
+        }
+
+        function insertVolunteer(volunteerId, userId, campaignId, status) {
+            const url = `${baseUrl}/Insert?volunteerId=${encodeURIComponent(volunteerId)}&userId=${encodeURIComponent(userId)}&campaignId=${encodeURIComponent(campaignId)}&status=${encodeURIComponent(status)}`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (response) {
+                    $("#editModal").modal("hide");
+                    loadData();
+                    alert('Thêm mới thành công!');
+                },
+                error: function (error) {
+                    alert('Lỗi khi thêm dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        function updateVolunteer(volunteerId, userId, campaignId, status) {
+            const url = `${baseUrl}/Update?volunteerId=${encodeURIComponent(volunteerId)}&userId=${encodeURIComponent(userId)}&campaignId=${encodeURIComponent(campaignId)}&status=${encodeURIComponent(status)}`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (response) {
+                    $("#editModal").modal("hide");
+                    loadData();
+                    alert('Cập nhật thành công!');
+                },
+                error: function (error) {
+                    alert('Lỗi khi cập nhật dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Cập nhật openDialog để phân biệt giữa thêm mới và cập nhật
+        function openDialog(id = null) {
+            $("#editModal").modal("show");
+
+            if (id) {
+                // Đang ở chế độ sửa -> Chặn chỉnh sửa Volunteer ID
+                $.ajax({
+                    url: `${baseUrl}/Getlist`,
+                    method: 'GET',
+                    success: function (data) {
+                        const volunteer = data.find(x => x.vVolunteerId === id);
+                        if (volunteer) {
+                            $("#v_volunteer_id").val(volunteer.vVolunteerId).prop("readonly", true);
+                            $("#v_user_id").val(volunteer.vUserId);
+                            $("#v_campaign_id").val(volunteer.vCampaignId);
+                            $("#v_status").val(volunteer.vStatus);
+                        }
+                    }
+                });
+            } else {
+                // Thêm mới -> Cho phép nhập Volunteer ID
+                $("#v_volunteer_id").val("").prop("readonly", false);
+                $("#v_user_id").val("");
+                $("#v_campaign_id").val("");
+                $("#v_status").val("");
+            }
+        }
+        function deleteVolunteer(id) {
+            if (confirm('Bạn có chắc muốn xóa?')) {
+                $.ajax({
+                    url: `${baseUrl}/Delete?volunteerId=${encodeURIComponent(id)}`, // Truyền ID qua query string
+                    method: 'POST', // Dùng POST thay vì DELETE
+                    success: function (response) {
+                        loadData();
+                        alert('Xóa thành công!');
+                    },
+                    error: function (xhr, status, error) {
+                        alert(`Lỗi khi xóa dữ liệu: ${xhr.responseText}`);
+                        console.error(xhr, status, error);
+                    }
+                });
+            }
+        }
+
+        async function loadCampaigns() {
+            try {
+                const response = await fetch('http://vanesline.runasp.net/api/Campaign/GetList');
+                const campaigns = await response.json();
+                const select = document.getElementById('v_campaign_id');
+                campaigns.forEach(campaign => {
+                    const option = document.createElement('option');
+                    option.value = campaign.cCampaignId;
+                    option.textContent = campaign.cTitle;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Lỗi khi load Campaign:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadCampaigns);
+
+        // Tìm kiếm Report theo từ khóa
+        $("#searchInput").on("keyup", function () {
+            let value = $(this).val().toLowerCase();
+            $("#dataTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

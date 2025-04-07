@@ -1,0 +1,1146 @@
+[
+  {
+    "ContainingType": "Charity_Website_API.Controllers.AdminLog",
+    "Method": "DeleteAdminLog",
+    "RelativePath": "AdminLog/Delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "a_log_id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.AdminLog",
+    "Method": "GetList",
+    "RelativePath": "AdminLog/GetList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.AdminLog",
+    "Method": "AddAdminLog",
+    "RelativePath": "AdminLog/Insert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "a_log_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "a_admin_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "a_action",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.AdminLog",
+    "Method": "UpdateAdminLog",
+    "RelativePath": "AdminLog/Update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "a_log_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "a_admin_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "a_action",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityProgram3.Controllers.CampaignController",
+    "Method": "DeleteCampaign",
+    "RelativePath": "api/Campaign/Delete",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cam_id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityProgram3.Controllers.CampaignController",
+    "Method": "GetCampaignById",
+    "RelativePath": "api/Campaign/GetbyID",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityProgram3.Controllers.CampaignController",
+    "Method": "GetUser",
+    "RelativePath": "api/Campaign/GetList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityProgram3.Controllers.CampaignController",
+    "Method": "AddCampaign",
+    "RelativePath": "api/Campaign/Insert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cam_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "org_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cam_title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cam_description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "goal_ammount",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "start_date",
+        "Type": "System.DateOnly",
+        "IsRequired": false
+      },
+      {
+        "Name": "end_date",
+        "Type": "System.DateOnly",
+        "IsRequired": false
+      },
+      {
+        "Name": "cam_status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cam_creation_date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "category",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityProgram3.Controllers.CampaignController",
+    "Method": "SearchCampaigns",
+    "RelativePath": "api/Campaign/SearchCampaigns",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "campaignId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "organizationId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityProgram3.Controllers.CampaignController",
+    "Method": "UpdateCampaign",
+    "RelativePath": "api/Campaign/Update",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cam_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "org_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cam_title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cam_description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "goal_ammount",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "start_date",
+        "Type": "System.DateOnly",
+        "IsRequired": false
+      },
+      {
+        "Name": "end_date",
+        "Type": "System.DateOnly",
+        "IsRequired": false
+      },
+      {
+        "Name": "cam_status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cam_creation_date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "category",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.CommentController",
+    "Method": "GetList",
+    "RelativePath": "api/Comment/GetList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.GetJWTToken",
+    "Method": "GetKey",
+    "RelativePath": "api/GetJWTToken/GetKey",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uid",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "quyen",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.GetJWTToken",
+    "Method": "GetKeyAdmin",
+    "RelativePath": "api/GetJWTToken/GetKeyAdmin",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uid",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.GetJWTToken",
+    "Method": "GetKeyCustomer",
+    "RelativePath": "api/GetJWTToken/GetKeyCustomer",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uid",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pwd",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.GetJWTToken",
+    "Method": "GetKeyVolunteer",
+    "RelativePath": "api/GetJWTToken/GetKeyVolunteer",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uid",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pwd",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.GetJWTToken",
+    "Method": "Login",
+    "RelativePath": "api/GetJWTToken/Login",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uid",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pwd",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.CampaignMedia",
+    "Method": "GetMediaByCampaign",
+    "RelativePath": "CampaignMedia/by-campaign/{campaignId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "campaignId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.CampaignMedia",
+    "Method": "DeleteCampaignMed",
+    "RelativePath": "CampaignMedia/Delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "m_media_id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.CampaignMedia",
+    "Method": "GetList",
+    "RelativePath": "CampaignMedia/GetList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.CampaignMedia",
+    "Method": "AddCampaignMed",
+    "RelativePath": "CampaignMedia/Insert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "m_media_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "m_campaign_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "m_media_type",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "m_media_url",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.CampaignMedia",
+    "Method": "UpdateCampaignMed",
+    "RelativePath": "CampaignMedia/Update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "m_media_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "m_campaign_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "m_media_type",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "m_media_url",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.CommentController",
+    "Method": "Xoabinhluan",
+    "RelativePath": "Comment/Delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cmt_comment_id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.CommentController",
+    "Method": "Thembinhluan",
+    "RelativePath": "Comment/Insert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cmt_comment_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cmt_user_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cmt_campaign_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cmt_content",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cmt_created_at",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.CommentController",
+    "Method": "Capnhatbinhluan",
+    "RelativePath": "Comment/Update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cmt_comment_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cmt_user_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cmt_campaign_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cmt_content",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cmt_created_at",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.Donation",
+    "Method": "DeleteDonation",
+    "RelativePath": "Donation/Delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "d_donation_id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.Donation",
+    "Method": "GetList",
+    "RelativePath": "Donation/GetList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.Donation",
+    "Method": "AddDonation",
+    "RelativePath": "Donation/Insert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "d_donation_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "d_user_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "d_campaign_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "d_name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "d_amount",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "d_total_value",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.Donation",
+    "Method": "UpdateDonation",
+    "RelativePath": "Donation/Update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "d_donation_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "d_user_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "d_campaign_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "d_name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "d_amount",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "d_total_value",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.LoginController",
+    "Method": "Login",
+    "RelativePath": "Login/Login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "password",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.RegisterController",
+    "Method": "Register",
+    "RelativePath": "Register/Register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "project.Controllers.RegisterController\u002BUserRegistrationModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.ReportController",
+    "Method": "Delete",
+    "RelativePath": "Report/Delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "r_report_id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.ReportController",
+    "Method": "GetList",
+    "RelativePath": "Report/GetList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.ReportController",
+    "Method": "Insert",
+    "RelativePath": "Report/Insert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "r_report_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "r_campaign_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "r_report_details",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.ReportController",
+    "Method": "Update",
+    "RelativePath": "Report/Update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "r_report_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "r_campaign_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "r_report_details",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.TaskController",
+    "Method": "Delete",
+    "RelativePath": "Task/Delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "taskId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.TaskController",
+    "Method": "Getlist",
+    "RelativePath": "Task/Getlist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.TaskController",
+    "Method": "Insert",
+    "RelativePath": "Task/Insert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "taskId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "campaignId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "assignedTo",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.TaskController",
+    "Method": "Update",
+    "RelativePath": "Task/Update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "taskId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "campaignId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "assignedTo",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.UserController",
+    "Method": "Delete",
+    "RelativePath": "User/Delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "u_user_id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.UserController",
+    "Method": "GetList",
+    "RelativePath": "User/GetList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.UserController",
+    "Method": "Insert",
+    "RelativePath": "User/Insert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "u_user_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_password",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_role",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_phone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_address",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CharityWEB.Controllers.UserController",
+    "Method": "Update",
+    "RelativePath": "User/Update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "u_user_id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_password",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_role",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_phone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "u_address",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.VolunteerController",
+    "Method": "Delete",
+    "RelativePath": "Volunteer/Delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "volunteerId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.VolunteerController",
+    "Method": "Getlist",
+    "RelativePath": "Volunteer/Getlist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.VolunteerController",
+    "Method": "Insert",
+    "RelativePath": "Volunteer/Insert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "volunteerId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "campaignId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.VolunteerController",
+    "Method": "GetTopDonors",
+    "RelativePath": "Volunteer/TopDonors",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "top",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "project.Controllers.VolunteerController",
+    "Method": "Update",
+    "RelativePath": "Volunteer/Update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "volunteerId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "campaignId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.WeatherForecastController",
+    "Method": "Get",
+    "RelativePath": "WeatherForecast",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Charity_Website_API.WeatherForecast, Charity_Website_API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "EndpointName": "GetWeatherForecast"
+  }
+]

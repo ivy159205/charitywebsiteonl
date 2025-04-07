@@ -1,0 +1,20 @@
+{
+  "Version": 1,
+  "Hash": "RCa99Ypcem+nzcelexxNoZ1e69hvaByBebtKV8B7gik=",
+  "Source": "Charity_Website_API",
+  "BasePath": "_content/Charity_Website_API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Charity_Website_API\\wwwroot",
+      "Source": "Charity_Website_API",
+      "ContentRoot": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\wwwroot\\",
+      "BasePath": "_content/Charity_Website_API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [],
+  "Endpoints": []
+}

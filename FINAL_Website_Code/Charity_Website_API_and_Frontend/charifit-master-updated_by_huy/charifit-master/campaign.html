@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý chiến dịch</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Giới hạn chiều rộng của bảng */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        /* Điều chỉnh cột để có chiều rộng phù hợp hơn */
+        .table th,
+        .table td {
+            white-space: nowrap;
+            padding: 0.4rem 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Chiều rộng cố định cho các cột quan trọng */
+        .col-id {
+            width: 90px;
+        }
+
+        .col-amount {
+            width: 100px;
+        }
+
+        .col-date {
+            width: 110px;
+        }
+
+        .col-title {
+            max-width: 200px;
+            white-space: normal;
+        }
+
+        .col-desc {
+            max-width: 300px;
+            white-space: normal;
+        }
+
+        /* Làm cho input trong bảng nhỏ hơn */
+        .filter-input {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid mt-4">
+        <h2 class="text-center">Quản lý chiến dịch</h2>
+
+        <!-- Thanh Menu -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Quản lý chiến dịch</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="#">Giới thiệu</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Thanh tìm kiếm và nút thêm mới -->
+        <div class="row mt-2">
+            <div class="col-md-10">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
+                    <button class="btn btn-primary" onclick="search()">Tìm kiếm</button>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100" onclick="openDialog()">Thêm chiến dịch</button>
+            </div>
+        </div>
+
+        <!-- Bảng hiển thị dữ liệu với khả năng cuộn ngang -->
+        <div class="table-container mt-3">
+            <table class="table table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th class="col-id">ID</th>
+                        <th class="col-id">Org ID</th>
+                        <th class="col-title">Title</th>
+                        <th class="col-desc">Description</th>
+                        <th class="col-amount">Goal</th>
+                        <th class="col-amount">Collected</th>
+                        <th class="col-date">Start Date</th>
+                        <th class="col-date">End Date</th>
+                        <th>Status</th>
+                        <th>Category</th>
+                        <th>Hành động</th>
+                    </tr>
+                    <tr>
+                        <th><input type="text" class="form-control form-control-sm filter-input" data-column="0"></th>
+                        <th><input type="text" class="form-control form-control-sm filter-input" data-column="1"></th>
+                        <th><input type="text" class="form-control form-control-sm filter-input" data-column="2"></th>
+                        <th><input type="text" class="form-control form-control-sm filter-input" data-column="3"></th>
+                        <th><input type="number" class="form-control form-control-sm filter-input" data-column="4"></th>
+                        <th><input type="number" class="form-control form-control-sm filter-input" data-column="5"></th>
+                        <th><input type="date" class="form-control form-control-sm filter-input" data-column="6"></th>
+                        <th><input type="date" class="form-control form-control-sm filter-input" data-column="7"></th>
+                        <th>
+                            <select class="form-control form-control-sm filter-input" data-column="8">
+                                <option value="">Tất cả</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </th>
+                        <th>
+                            <select class="form-control form-control-sm filter-input" data-column="9">
+                                <option value="">Tất cả</option>
+                                <option value="Educational">Educational</option>
+                                <option value="Essential">Essential</option>
+                            </select>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable"></tbody>
+                <tfoot>
+                    <tr class="table-secondary fw-bold">
+                        <td colspan="4" class="text-end">Tổng cộng:</td>
+                        <td id="totalGoalAmount"></td>
+                        <td id="totalCollectedAmount"></td>
+                        <td colspan="5"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Dialog -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thông tin chiến dịch</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label class="form-label">Campaign ID</label>
+                        <input type="text" id="campaignID" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Organization ID</label>
+                        <input type="text" id="organizationID" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Title</label>
+                        <input type="text" id="title" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Description</label>
+                        <textarea id="description" class="form-control form-control-sm" rows="3"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Goal Amount</label>
+                        <input type="number" id="goalAmount" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" id="startDate" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">End Date</label>
+                        <input type="date" id="endDate" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Status</label>
+                        <select id="status" class="form-select form-select-sm" required>
+                            <option value="">Chọn trạng thái</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Category</label>
+                        <select id="category" class="form-select form-select-sm" required>
+                            <option value="">Chọn loại từ thiện</option>
+                            <option value="Educational">Educational</option>
+                            <option value="Essential">Essential</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-success btn-sm" onclick="saveCampaign()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Khai báo URL cơ bản của API
+        const baseUrl = 'http://vanesline.runasp.net/api/Campaign';
+
+        // Tải dữ liệu khi trang được load
+        $(document).ready(function () {
+            loadData();
+        });
+
+        // Hàm tải dữ liệu từ API
+        function loadData() {
+            $.ajax({
+                url: `${baseUrl}/GetList`,
+                method: 'GET',
+                success: function (data) {
+                    renderTable(data);
+                    calculateTotals(data);
+                },
+                error: function (error) {
+                    alert('Lỗi khi tải dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Hàm format số với dấu chấm ngăn cách hàng nghìn
+        function formatNumber(number) {
+            if (number == null) return "0";
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        // Hàm tính tổng Goal Amount và Collected Amount
+        function calculateTotals(data) {
+            let totalGoalAmount = 0;
+            let totalCollectedAmount = 0;
+
+            data.forEach((item) => {
+                totalGoalAmount += item.cGoalAmount || 0;
+                totalCollectedAmount += item.cCollectedAmount || 0;
+            });
+
+            $('#totalGoalAmount').text(formatNumber(totalGoalAmount));
+            $('#totalCollectedAmount').text(formatNumber(totalCollectedAmount));
+        }
+
+        // Hàm render bảng với dữ liệu
+        function renderTable(data) {
+            let html = '';
+            data.forEach((item) => {
+                html += `
+                    <tr>
+                        <td>${item.cCampaignId}</td>
+                        <td>${item.cOrganizationId}</td>
+                        <td>${item.cTitle}</td>
+                        <td>${item.cDescription}</td>
+                        <td>${formatNumber(item.cGoalAmount)}</td>
+                        <td>${formatNumber(item.cCollectedAmount)}</td>
+                        <td>${item.cStartDate}</td>
+                        <td>${item.cEndDate}</td>
+                        <td>${item.cStatus}</td>
+                        <td>${item.cCategory}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openDialog('${item.cCampaignId}')">Sửa</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteCampaign('${item.cCampaignId}')">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            $('#dataTable').html(html);
+        }
+
+        // Hàm mở dialog
+        function openDialog(id = null) {
+            $("#editModal").modal("show");
+
+            if (id) {
+                // Chế độ sửa - load dữ liệu và khóa Campaign ID
+                $.ajax({
+                    url: `${baseUrl}/GetList`,
+                    method: 'GET',
+                    success: function (data) {
+                        const campaign = data.find(x => x.cCampaignId === id);
+                        if (campaign) {
+                            $("#campaignID").val(campaign.cCampaignId).prop("readonly", true);
+                            $("#organizationID").val(campaign.cOrganizationId);
+                            $("#title").val(campaign.cTitle);
+                            $("#description").val(campaign.cDescription);
+                            $("#goalAmount").val(campaign.cGoalAmount);
+                            $("#startDate").val(campaign.cStartDate);
+                            $("#endDate").val(campaign.cEndDate);
+                            $("#status").val(campaign.cStatus);
+                            $("#category").val(campaign.cCategory);
+                        }
+                    }
+                });
+            } else {
+                // Chế độ thêm mới - xóa form và cho phép nhập Campaign ID
+                $("#campaignID").val("").prop("readonly", false);
+                $("#organizationID").val("");
+                $("#title").val("");
+                $("#description").val("");
+                $("#goalAmount").val("");
+                $("#startDate").val("");
+                $("#endDate").val("");
+                $("#status").val("");
+                $("#category").val("");
+            }
+        }
+
+        // Hàm lưu Campaign
+        function saveCampaign() {
+            var campaignID = $("#campaignID").val();
+            var organizationID = $("#organizationID").val();
+            var title = $("#title").val();
+            var description = $("#description").val();
+            var goalAmount = $("#goalAmount").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            var status = $("#status").val();
+            var category = $("#category").val();
+            var createdAt = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' });
+
+            if (!campaignID || !organizationID || !title || !description || !goalAmount || !startDate || !endDate || !status || !category) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            if ($("#campaignID").prop("readonly")) {
+                updateCampaign(campaignID, organizationID, title, description, goalAmount, startDate, endDate, status, category, createdAt);
+            } else {
+                insertCampaign(campaignID, organizationID, title, description, goalAmount, startDate, endDate, status, category, createdAt);
+            }
+        }
+
+        // Hàm thêm mới Campaign
+        function insertCampaign(campaignID, organizationID, title, description, goalAmount, startDate, endDate, status, category, createdAt) {
+            const url = `${baseUrl}/Insert?cam_id=${encodeURIComponent(campaignID)}&org_id=${encodeURIComponent(organizationID)}&cam_title=${encodeURIComponent(title)}&cam_description=${encodeURIComponent(description)}&goal_ammount=${encodeURIComponent(goalAmount)}&start_date=${encodeURIComponent(startDate)}&end_date=${encodeURIComponent(endDate)}&cam_status=${encodeURIComponent(status)}&cam_creation_date=${encodeURIComponent(createdAt)}&category=${encodeURIComponent(category)}`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (response) {
+                    $("#editModal").modal("hide");
+                    loadData();
+                    alert('Thêm mới thành công!');
+                },
+                error: function (error) {
+                    alert('Lỗi khi thêm dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Hàm cập nhật Campaign
+        function updateCampaign(campaignID, organizationID, title, description, goalAmount, startDate, endDate, status, category, createdAt) {
+            const url = `${baseUrl}/Update?cam_id=${encodeURIComponent(campaignID)}&org_id=${encodeURIComponent(organizationID)}&cam_title=${encodeURIComponent(title)}&cam_description=${encodeURIComponent(description)}&goal_ammount=${encodeURIComponent(goalAmount)}&start_date=${encodeURIComponent(startDate)}&end_date=${encodeURIComponent(endDate)}&cam_status=${encodeURIComponent(status)}&cam_creation_date=${encodeURIComponent(createdAt)}&category=${encodeURIComponent(category)}`;
+
+            $.ajax({
+                url: url,
+                method: 'PUT',
+                success: function (response) {
+                    $("#editModal").modal("hide");
+                    loadData();
+                    alert('Cập nhật thành công!');
+                },
+                error: function (error) {
+                    alert('Lỗi khi cập nhật dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Hàm xóa Campaign
+        function deleteCampaign(id) {
+            if (confirm('Bạn có chắc muốn xóa?')) {
+                $.ajax({
+                    url: `${baseUrl}/Delete?cam_id=${encodeURIComponent(id)}`,
+                    method: 'DELETE',
+                    success: function (response) {
+                        loadData();
+                        alert('Xóa thành công!');
+                    },
+                    error: function (error) {
+                        alert('Lỗi khi xóa dữ liệu');
+                        console.error(error);
+                    }
+                });
+            }
+        }
+
+        // Hàm tìm kiếm
+        $("#searchInput").on("keyup", function () {
+            let value = $(this).val().toLowerCase();
+            $("#dataTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+        $(document).ready(function () {
+            $(".filter-input").on("input change", function () {
+                let columnIndex = $(this).data("column");
+                let filterValue = $(this).val().toLowerCase();
+
+                $("#dataTable tr").filter(function () {
+                    let cellValue = $(this).find("td").eq(columnIndex).text().toLowerCase();
+                    if (filterValue === "") {
+                        $(this).show();
+                    } else {
+                        $(this).toggle(cellValue.indexOf(filterValue) > -1);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Từ Thiện</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin_styles.css">
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Sidebar với menu điều hướng -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-heart"></i> Nhóm 1 - Website từ thiện
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="dashboard.html">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Tổng quan</span>
+                </li>
+                <li class="nav-item" data-page="admin_log.html">
+                    <i class="fas fa-history"></i>
+                    <span>Quản lý lịch sử hệ thống</span>
+                </li>
+                <li class="nav-item" data-page="campaign.html">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Quản lý chiến dịch</span>
+                </li>
+                <li class="nav-item" data-page="campaignMedia.html">
+                    <i class="fas fa-photo-video"></i>
+                    <span>Quản lý file truyền thông</span>
+                </li>
+                <li class="nav-item" data-page="comment.html">
+                    <i class="fas fa-comments"></i>
+                    <span>Quản lý bình luận</span>
+                </li>
+                <li class="nav-item" data-page="report.html">
+                    <i class="fas fa-flag"></i>
+                    <span>Quản lý báo cáo</span>
+                </li>
+                <li class="nav-item" data-page="user.html">
+                    <i class="fas fa-users"></i>
+                    <span>Quản lý người dùng</span>
+                </li>
+                <li class="nav-item" data-page="Volunteer.html">
+                    <i class="fas fa-hands-helping"></i>
+                    <span>Quản lý tình nguyện viên</span>
+                </li>
+                <li class="nav-item" data-page="donation.html">
+                    <i class="fas fa-donate"></i>
+                    <span>Quản lý quyên góp</span>
+                </li>
+                <li class="nav-item" data-page="Task.html">
+                    <i class="fas fa-tasks"></i>
+                    <span>Quản lý công việc</span>
+                </li>
+                <li class="nav-item" data-page="notifications.html">
+                    <i class="fas fa-bell"></i>
+                    <span>Thông báo</span>
+                </li>
+                <li class="nav-item" data-page="settings.html">
+                    <i class="fas fa-cog"></i>
+                    <span>Cài đặt</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Khu vực nội dung chính -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">Tổng quan</h1>
+                <div class="user-profile" id="userProfile">
+                    <img src="img/1.jpg" alt="Avatar">
+                    <div class="user-info">
+                        <span id="adminName">Admin - Hải Đức</span>
+                        <i class="fas fa-caret-down"></i> <!-- Biểu tượng dropdown -->
+                    </div>
+                    <div class="dropdown-menu hidden" id="dropdownMenu">
+                        <a href="#" id="logoutBtn">Đăng xuất</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- iframe để hiển thị nội dung -->
+            <iframe id="content-frame" class="content-frame" src="dashboard.html"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Lấy các phần tử DOM cần thiết
+        const iframe = document.getElementById('content-frame');
+        const pageTitle = document.querySelector('.page-title');
+        const menuItems = document.querySelectorAll('.nav-item');
+
+        // Xử lý sự kiện click trên menu
+        menuItems.forEach(item => {
+            item.addEventListener('click', function () {
+                // Xóa trạng thái active từ tất cả các menu items
+                menuItems.forEach(i => i.classList.remove('active'));
+
+                // Thêm trạng thái active cho item được click
+                this.classList.add('active');
+
+                // Cập nhật tiêu đề trang
+                pageTitle.textContent = this.querySelector('span').textContent;
+
+                // Cập nhật src của iframe để load trang mới
+                const page = this.getAttribute('data-page');
+                iframe.src = page;
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const userDataJson = localStorage.getItem("userData");
+
+            if (!userDataJson) {
+                alert("Bạn cần đăng nhập!");
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const userData = JSON.parse(userDataJson);
+                const token = userData.token;
+                const userRole = userData.role;
+
+                if (!token) {
+                    alert("Bạn cần đăng nhập!");
+                    window.location.href = "login.html";
+                } else {
+                    // Kiểm tra quyền nếu cần
+                    if (userRole !== "admin" && window.location.pathname.includes("admin.html")) {
+                        alert("Bạn không có quyền truy cập!");
+                        window.location.href = "index.html";
+                    }
+                }
+            } catch (error) {
+                console.error("Lỗi khi parse dữ liệu userData:", error);
+                localStorage.removeItem("userData"); // Xóa dữ liệu lỗi để tránh vấn đề lần sau
+                window.location.href = "login.html";
+            }
+        });
+
+        const dropdownMenu = document.getElementById("dropdownMenu");
+
+        // Toggle dropdown khi click vào user profile
+        userProfile.addEventListener("click", function (event) {
+            event.stopPropagation(); // Ngăn chặn sự kiện lan ra ngoài
+            dropdownMenu.classList.toggle("show");
+        });
+
+        // Ẩn dropdown nếu click ra ngoài
+        document.addEventListener("click", function (event) {
+            if (!userProfile.contains(event.target)) {
+                dropdownMenu.classList.remove("show");
+            }
+        });
+
+        // Xử lý đăng xuất
+        logoutBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            localStorage.removeItem("userData"); // Xóa dữ liệu user
+            window.location.href = "login.html"; // Chuyển hướng về trang đăng nhập
+        });
+    </script>
+</body>
+
+</html>

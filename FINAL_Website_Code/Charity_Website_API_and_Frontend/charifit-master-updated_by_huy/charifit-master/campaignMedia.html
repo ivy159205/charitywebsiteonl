@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý file truyền thông chiến dịch</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">Quản lý file truyền thông chiến dịch</h2>
+
+        <!-- Thanh Menu -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Quản lý file truyền thông chiến dịch</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="#">Giới thiệu</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Thanh tìm kiếm và nút thêm mới -->
+        <div class="row mt-2">
+            <div class="col-md-10">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
+                    <button class="btn btn-primary" onclick="search()">Tìm kiếm</button>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100" onclick="openDialog()">Thêm file</button>
+            </div>
+        </div>
+
+        <!-- Bảng hiển thị dữ liệu -->
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Media ID</th>
+                    <th>Campaign ID</th>
+                    <th>Media Type</th>
+                    <th>Media URL</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Modal Dialog -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thông tin file truyền thông chiến dịch</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Media ID</label>
+                        <input type="text" id="mediaID" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Campaign ID</label>
+                        <select id="campaignID" class="form-control">
+                            <option value="">Chọn Campaign</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Media Type</label>
+                        <input type="text" id="mediaType" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Media</label>
+                        <div class="input-group">
+                            <input type="text" id="mediaURL" class="form-control" readonly>
+                            <input type="file" id="mediaFile" class="form-control" accept="image/*">
+                        </div>
+                        <div class="mt-2">
+                            <img id="previewImage" src="" alt="Preview"
+                                style="max-width: 100%; max-height: 200px; display: none;">
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="saveCampaignMedia()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Khai báo URL cơ bản của API
+        const baseUrl = 'http://vanesline.runasp.net/CampaignMedia';
+        let selectedFile = null;
+
+        // Tải dữ liệu khi trang được load
+        $(document).ready(function () {
+            loadData();
+        });
+
+        // Preview image when file is selected
+        $("#mediaFile").change(function () {
+            selectedFile = this.files[0];
+            if (selectedFile) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#previewImage").attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(selectedFile);
+            }
+        });
+
+        // Hàm tải dữ liệu từ API
+        function loadData() {
+            $.ajax({
+                url: `${baseUrl}/GetList`,
+                method: 'GET',
+                success: function (data) {
+                    renderTable(data);
+                },
+                error: function (error) {
+                    alert('Lỗi khi tải dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Hàm render bảng với dữ liệu
+        function renderTable(data) {
+            let html = '';
+            data.forEach((item) => {
+                html += `
+                <tr>
+                    <td>${item.mMediaId}</td>
+                    <td>${item.mCampaignId}</td>
+                    <td>${item.mMediaType}</td>
+                    <td>
+                        <img src="${item.mMediaUrl}" alt="Media Image" style="width: 100px; height: auto;" />
+                    </td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="openDialog('${item.mMediaId}')">Sửa</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteCampaignMedia('${item.mMediaId}')">Xóa</button>
+                    </td>
+                </tr>
+            `;
+            });
+            $('#dataTable').html(html);
+        }
+
+        // Hàm mở dialog
+        function openDialog(id = null) {
+            $("#editModal").modal("show");
+            $("#previewImage").hide();
+            selectedFile = null;
+
+            if (id) {
+                // Chế độ sửa - load dữ liệu và khóa Media ID
+                $.ajax({
+                    url: `${baseUrl}/GetList`,
+                    method: 'GET',
+                    success: function (data) {
+                        const campaignMedia = data.find(x => x.mMediaId === id);
+                        if (campaignMedia) {
+                            $("#mediaID").val(campaignMedia.mMediaId).prop("readonly", true);
+                            $("#campaignID").val(campaignMedia.mCampaignId);
+                            $("#mediaType").val(campaignMedia.mMediaType);
+                            $("#mediaURL").val(campaignMedia.mMediaUrl);
+
+                            // Show preview of existing image
+                            $("#previewImage").attr('src', campaignMedia.mMediaUrl).show();
+                        }
+                    }
+                });
+            } else {
+                // Chế độ thêm mới - xóa form và cho phép nhập Media ID
+                $("#mediaID").val("").prop("readonly", false);
+                $("#campaignID").val("");
+                $("#mediaType").val("");
+                $("#mediaURL").val("");
+            }
+        }
+
+        // Hàm lưu Campaign Media
+        function saveCampaignMedia() {
+            var mediaID = $("#mediaID").val();
+            var campaignID = $("#campaignID").val();
+            var mediaType = $("#mediaType").val();
+
+            if (!mediaID || !campaignID || !mediaType || (!$("#mediaURL").val() && !selectedFile)) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            if (selectedFile) {
+                // Create FormData object for file upload
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                formData.append('mediaId', mediaID);
+                formData.append('campaignId', campaignID);
+                formData.append('mediaType', mediaType);
+
+                // Upload file first
+                $.ajax({
+                    url: `${baseUrl}/UploadMedia`,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        $("#editModal").modal("hide");
+                        loadData();
+                        alert('Thao tác thành công!');
+                        selectedFile = null;
+                    },
+                    error: function (error) {
+                        alert('Lỗi khi tải lên file');
+                        console.error(error);
+                    }
+                });
+            } else {
+                // Use existing URL
+                var mediaURL = $("#mediaURL").val();
+
+                if ($("#mediaID").prop("readonly")) {
+                    updateCampaignMedia(mediaID, campaignID, mediaType, mediaURL);
+                } else {
+                    insertCampaignMedia(mediaID, campaignID, mediaType, mediaURL);
+                }
+            }
+        }
+
+        // Hàm thêm mới Campaign Media
+        function insertCampaignMedia(mediaID, campaignID, mediaType, mediaURL) {
+            const url = `${baseUrl}/Insert?m_media_id=${encodeURIComponent(mediaID)}&m_campaign_id=${encodeURIComponent(campaignID)}&m_media_type=${encodeURIComponent(mediaType)}&m_media_url=${encodeURIComponent(mediaURL)}`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (response) {
+                    $("#editModal").modal("hide");
+                    loadData();
+                    alert('Thêm mới thành công!');
+                },
+                error: function (error) {
+                    alert('Lỗi khi thêm dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Hàm cập nhật Campaign Media
+        function updateCampaignMedia(mediaID, campaignID, mediaType, mediaURL) {
+            const url = `${baseUrl}/Update?m_media_id=${encodeURIComponent(mediaID)}&m_campaign_id=${encodeURIComponent(campaignID)}&m_media_type=${encodeURIComponent(mediaType)}&m_media_url=${encodeURIComponent(mediaURL)}`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (response) {
+                    $("#editModal").modal("hide");
+                    loadData();
+                    alert('Cập nhật thành công!');
+                },
+                error: function (error) {
+                    alert('Lỗi khi cập nhật dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Hàm xóa Campaign Media
+        function deleteCampaignMedia(id) {
+            if (confirm('Bạn có chắc muốn xóa?')) {
+                $.ajax({
+                    url: `${baseUrl}/Delete?m_media_id=${encodeURIComponent(id)}`,
+                    method: 'POST',
+                    success: function (response) {
+                        loadData();
+                        alert('Xóa thành công!');
+                    },
+                    error: function (error) {
+                        alert('Lỗi khi xóa dữ liệu');
+                        console.error(error);
+                    }
+                });
+            }
+        }
+
+        // Hàm tìm kiếm
+        $("#searchInput").on("keyup", function () {
+            let value = $(this).val().toLowerCase();
+            $("#dataTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+        async function loadCampaigns() {
+            try {
+                const response = await fetch('http://vanesline.runasp.net/api/Campaign/GetList');
+                const campaigns = await response.json();
+                const select = document.getElementById('campaignID');
+
+                // Clear existing options except the first one
+                $('#campaignID option:not(:first)').remove();
+
+                campaigns.forEach(campaign => {
+                    const option = document.createElement('option');
+                    option.value = campaign.cCampaignId;
+                    option.textContent = campaign.cTitle;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Lỗi khi load Campaign:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadCampaigns);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

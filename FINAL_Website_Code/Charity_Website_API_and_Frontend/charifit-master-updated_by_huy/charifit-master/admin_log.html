@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý lịch sử sửa đổi hệ thống</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Thêm thư viện SheetJS (xlsx) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Thêm FileSaver để tải xuống file -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">Quản lý lịch sử sửa đổi hệ thống</h2>
+
+        <!-- Thanh Menu -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Quản lý lịch sử sửa đổi hệ thống</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="#">Giới thiệu</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Thanh tìm kiếm và nút thêm mới -->
+        <div class="row mt-2">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
+                    <button class="btn btn-primary" onclick="search()">Tìm kiếm</button>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100" onclick="openDialog()">Thêm log</button>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-success w-100" onclick="exportToExcel()">Xuất Excel</button>
+            </div>
+        </div>
+
+        <!-- Bảng hiển thị dữ liệu -->
+        <table class="table table-bordered mt-3" id="adminLogTable">
+            <thead>
+                <tr>
+                    <th>Log ID</th>
+                    <th>Admin ID</th>
+                    <th>Action</th>
+                    <th>Action Date</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Modal Dialog -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thông tin lịch sử sửa đổi hệ thống</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Log ID</label>
+                        <input type="text" id="logID" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Admin ID</label>
+                        <input type="text" id="adminID" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Action</label>
+                        <input type="text" id="action" class="form-control">
+                    </div>
+                    <button class="btn btn-success" onclick="saveAdminLog()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Khai báo URL cơ bản của API
+        const baseUrl = 'http://vanesline.runasp.net/AdminLog';
+
+        // Biến lưu trữ dữ liệu toàn cục
+        let adminLogData = [];
+
+        // Tải dữ liệu khi trang được load
+        $(document).ready(function () {
+            loadData();
+        });
+
+        // Hàm tải dữ liệu từ API
+        function loadData() {
+            $.ajax({
+                url: `${baseUrl}/GetList`,
+                method: 'GET',
+                success: function (data) {
+                    adminLogData = data; // Lưu dữ liệu vào biến toàn cục
+                    renderTable(data);
+                },
+                error: function (error) {
+                    alert('Lỗi khi tải dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Hàm render bảng với dữ liệu
+        function renderTable(data) {
+            let html = '';
+            data.forEach((item) => {
+                html += `
+                    <tr>
+                        <td>${item.aLogId}</td>
+                        <td>${item.aAdminId}</td>
+                        <td>${item.aAction}</td>
+                        <td>${new Date(item.aActionDate).toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openDialog('${item.aLogId}')">Sửa</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteAdminLog('${item.aLogId}')">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            $('#dataTable').html(html);
+        }
+
+        // Hàm mở dialog
+        function openDialog(id = null) {
+            $("#editModal").modal("show");
+
+            if (id) {
+                // Chế độ sửa - load dữ liệu và khóa Log ID
+                $.ajax({
+                    url: `${baseUrl}/GetList`,
+                    method: 'GET',
+                    success: function (data) {
+                        const adminLog = data.find(x => x.aLogId === id);
+                        if (adminLog) {
+                            $("#logID").val(adminLog.aLogId).prop("readonly", true);
+                            $("#adminID").val(adminLog.aAdminId);
+                            $("#action").val(adminLog.aAction);
+                        }
+                    }
+                });
+            } else {
+                // Chế độ thêm mới - xóa form và cho phép nhập Log ID
+                $("#logID").val("").prop("readonly", false);
+                $("#adminID").val("");
+                $("#action").val("");
+            }
+        }
+
+        // Hàm lưu Admin Log
+        function saveAdminLog() {
+            const logID = $("#logID").val();
+            const adminID = $("#adminID").val();
+            const action = $("#action").val();
+
+            if (!logID || !adminID || !action) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            if ($("#logID").prop("readonly")) {
+                updateAdminLog(logID, adminID, action);
+            } else {
+                insertAdminLog(logID, adminID, action);
+            }
+        }
+
+        // Hàm thêm mới Admin Log
+        function insertAdminLog(logID, adminID, action) {
+            const url = `${baseUrl}/Insert?a_log_id=${encodeURIComponent(logID)}&a_admin_id=${encodeURIComponent(adminID)}&a_action=${encodeURIComponent(action)}`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (response) {
+                    $("#editModal").modal("hide");
+                    loadData();
+                    alert('Thêm mới thành công!');
+                },
+                error: function (error) {
+                    alert('Lỗi khi thêm dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Hàm cập nhật Admin Log
+        function updateAdminLog(logID, adminID, action) {
+            const url = `${baseUrl}/Update?a_log_id=${encodeURIComponent(logID)}&a_admin_id=${encodeURIComponent(adminID)}&a_action=${encodeURIComponent(action)}`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (response) {
+                    $("#editModal").modal("hide");
+                    loadData();
+                    alert('Cập nhật thành công!');
+                },
+                error: function (error) {
+                    alert('Lỗi khi cập nhật dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        // Hàm xóa Admin Log
+        function deleteAdminLog(id) {
+            if (confirm('Bạn có chắc muốn xóa?')) {
+                $.ajax({
+                    url: `${baseUrl}/Delete?a_log_id=${encodeURIComponent(id)}`,
+                    method: 'POST',
+                    success: function (response) {
+                        loadData();
+                        alert('Xóa thành công!');
+                    },
+                    error: function (error) {
+                        alert('Lỗi khi xóa dữ liệu');
+                        console.error(error);
+                    }
+                });
+            }
+        }
+
+        // Hàm tìm kiếm
+        $("#searchInput").on("keyup", function () {
+            let value = $(this).val().toLowerCase();
+            $("#dataTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+        // Hàm xuất ra file Excel
+        function exportToExcel() {
+            // Chuẩn bị dữ liệu để xuất
+            const dataToExport = adminLogData.map(item => {
+                return {
+                    'Log ID': item.aLogId,
+                    'Admin ID': item.aAdminId,
+                    'Action': item.aAction,
+                    'Action Date': new Date(item.aActionDate).toLocaleString()
+                };
+            });
+
+            // Tạo workbook và worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(dataToExport);
+
+            // Thêm worksheet vào workbook
+            XLSX.utils.book_append_sheet(wb, ws, "AdminLog");
+
+            // Tạo tên file với ngày giờ hiện tại
+            const now = new Date();
+            const fileName = `AdminLog_${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}.xlsx`;
+
+            // Xuất file
+            XLSX.writeFile(wb, fileName);
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
