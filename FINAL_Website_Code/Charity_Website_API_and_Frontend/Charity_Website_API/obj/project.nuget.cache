@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nA7lyLxnl7Q=",
+  "dgSpecHash": "b5WP4Gkeq9g=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Charity_Website_API.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Documents\\GitHub\\charitywebsiteonl\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Charity_Website_API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

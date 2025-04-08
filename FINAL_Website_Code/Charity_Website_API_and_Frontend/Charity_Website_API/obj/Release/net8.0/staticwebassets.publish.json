@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "JJZ2FDChqyvexzUfwnrp4X4RBD/JFNYVdLgFHXcZLOs=",
+  "Hash": "h/H5J5ALht0KAwc3VobPbK+UGTh/vIs28LrP649PEMI=",
   "Source": "Charity_Website_API",
   "BasePath": "_content/Charity_Website_API",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "Charity_Website_API\\wwwroot",
       "Source": "Charity_Website_API",
-      "ContentRoot": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Admin\\Documents\\GitHub\\charitywebsiteonl\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\wwwroot\\",
       "BasePath": "_content/Charity_Website_API",
       "Pattern": "**"
     }

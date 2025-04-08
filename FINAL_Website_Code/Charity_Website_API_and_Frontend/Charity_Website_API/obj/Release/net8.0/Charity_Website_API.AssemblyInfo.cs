@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Charity_Website_API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c716c3135fce2875b47ddf6dd6e4157eb32380f8")]
 [assembly: System.Reflection.AssemblyProductAttribute("Charity_Website_API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Charity_Website_API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
